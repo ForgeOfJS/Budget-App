@@ -1,5 +1,6 @@
 import Expense
 
+#Definition for each possible category.
 class Category:
 
     totalExpenseAmount = .00
@@ -10,6 +11,7 @@ class Category:
     def __init__(self, expenseTypeName):
         self.expenseTypeName = expenseTypeName
 
+    #Add/remove expense, adjust total count and amount
     def addExpense(self, expense):
         self.expenseList.append(expense)
         self.totalExpenseCount += 1
@@ -20,6 +22,8 @@ class Category:
         self.totalExpenseCount -= 1
         self.totalExpenseAmount -= removedExpense.expenseCost
 
+    #Requires knowledge of index and desired changes.
+    #TODO 2 Test if this method can take in only 2 parameters.
     def editExpense(self, listIndex, newAmount, newDescription):
         editedExpense = self.expenseList[listIndex]
         if (newAmount != None):

@@ -4,11 +4,13 @@ import Category as cat
 
 count = 0
 
+#Main Class for the Application
 class Budget:
 
     totalBudget = 0.00
     categoryList = []
 
+    #object creation method, system keeps a count of budgets.
     def __init__(self, budgetName = "Enter a name for your Budget", percentageSavings= .00):
         global count
         count = count + 1
@@ -26,17 +28,21 @@ class Budget:
         print("----------------------------------------\n")
 
     
+    #adds a category to a budget
+    #TODO 1 Adding amounts to category after initial use of this method will not reflect in the amount in the total budget FIX THIS
     def addCategory(self, categoryToAdd):
         self.categoryList.append(categoryToAdd)
         self.totalBudget += categoryToAdd.totalExpenseAmount
 
+    #temp FIX for TODO 1
+    #Checks through every category's total in budget and recalculates totalBudget.
     def refreshBudget(self):
         actualBudget = 0.00
         for i in self.categoryList:
             actualBudget += i.totalExpenseAmount
         self.totalBudget = actualBudget
             
-
+#for debugging purposes.
 def main():
     budget = Budget("Budget 1")
     food = cat.Category("Food")
@@ -52,6 +58,6 @@ def main():
     budget.refreshBudget()
     budget.display()
     
-
+#for debugging purposes.
 if __name__ == "__main__":
     main()
