@@ -1,4 +1,3 @@
-from unicodedata import category
 import Expense as exp
 import Category as cat
 
@@ -7,6 +6,8 @@ count = 0
 #Main Class for the Application
 class Budget:
 
+    netIncome = 0.00
+    availableIncome = 0.00
     totalBudget = 0.00
     categoryList = []
 
@@ -41,6 +42,18 @@ class Budget:
         for i in self.categoryList:
             actualBudget += i.totalExpenseAmount
         self.totalBudget = actualBudget
+
+    #allows user to set available income to a budget.
+    def setAvailableIncome(self, newNetIncome):
+        self.netIncome = newNetIncome
+        self.availableIncome = self.netIncome - self.totalBudget
+
+    #check and apply investment ratio to give user available income to invest
+    def setInvestableIncome(self, investRatio):
+        if investRatio >= 1:
+            raise Exception("Invest Ratio must be less than 1")
+        return self.availableIncome * investRatio
+
             
 #for debugging purposes.
 def main():

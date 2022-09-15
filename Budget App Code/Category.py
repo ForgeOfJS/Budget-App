@@ -32,4 +32,13 @@ class Category:
             self.totalExpenseAmount += editedExpense.expenseCost
         if (newDescription != None):
             editedExpense.expenseDescription = newDescription
+    
+    #Returns a percentage based on the name of category.
+    def recommendPercentage(self):
+        if self.expenseTypeName == "Food":
+            return 0.10
+        elif self.expenseTypeName == "Housing":
+            return 0.40
+        #TODO 2: input additional categories here
+        return 0.00
         
