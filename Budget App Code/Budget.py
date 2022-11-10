@@ -1,5 +1,6 @@
 import Expense as exp
 import Category as cat
+import pickle
 
 count = 0
 
@@ -16,7 +17,10 @@ class Budget:
         global count
         count = count + 1
         self.budgetName = budgetName
-        self.percentageSavings = percentageSavings
+        if float(percentageSavings) < 1.0 and float(percentageSavings) > 0.0:
+            self.percentageSavings = percentageSavings
+        else:
+            raise Exception("percentage of savings bust be between 1 and 0")
 
     #debugging tool
     def display(self):
@@ -53,6 +57,30 @@ class Budget:
         if investRatio >= 1:
             raise Exception("Invest Ratio must be less than 1")
         return self.availableIncome * investRatio
+
+    def save(self):
+        with open("BudgetCollection/savedBudget" + str(count) + ".pickle", "wb") as outfile:
+            pickle.dump(self, outfile)
+        print("Budget " +str(count)+ ": '" + self.budgetName + "' saved with %" + str(self.percentageSavings) + " going to savings!")
+
+    def populateBudgets():
+        budgetList = []
+
+        for file in os.listdir(os.curdir+'/BudgetCollection'):
+            if file.endswith('.pickle'):
+                with open('BudgetCollection/' + file, 'rb') as budget:
+                    budgetList.append(pickle.load(budget))
+
+        return budgetList
+
+    def deleteBudget(index):
+        for file in os.listdir(os.curdir+'/BudgetCollection'):
+            if file.endswith(str(index) + '.pickle'):
+                print("Done!")
+                os.remove(file)
+                break
+    
+
 
             
 #for debugging purposes.
