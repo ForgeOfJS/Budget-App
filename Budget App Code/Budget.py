@@ -17,7 +17,7 @@ class Budget:
         global count
         count = count + 1
         self.budgetName = budgetName
-        if float(percentageSavings) < 1.0 and float(percentageSavings) > 0.0:
+        if float(percentageSavings) < 1.0 and float(percentageSavings) >= 0.0:
             self.percentageSavings = percentageSavings
         else:
             raise Exception("percentage of savings bust be between 1 and 0")
