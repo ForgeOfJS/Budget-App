@@ -1,6 +1,7 @@
 import Expense as exp
 import Category as cat
 import pickle
+import os
 
 count = 0
 
@@ -59,14 +60,14 @@ class Budget:
         return self.availableIncome * investRatio
 
     def save(self):
-        with open("BudgetCollection/savedBudget" + str(count) + ".pickle", "wb") as outfile:
+        with open(os.getcwd()+"\Budget App Code\BudgetCollection\savedBudget" + str(count) + ".pickle", "wb") as outfile:
             pickle.dump(self, outfile)
         print("Budget " +str(count)+ ": '" + self.budgetName + "' saved with %" + str(self.percentageSavings) + " going to savings!")
 
     def populateBudgets():
         budgetList = []
 
-        for file in os.listdir(os.curdir+'/BudgetCollection'):
+        for file in os.listdir(os.getcwd()+'/BudgetCollection'):
             if file.endswith('.pickle'):
                 with open('BudgetCollection/' + file, 'rb') as budget:
                     budgetList.append(pickle.load(budget))
@@ -83,22 +84,22 @@ class Budget:
 
 
             
-#for debugging purposes.
-def main():
-    budget = Budget("Budget 1")
-    food = cat.Category("Food")
-    bread = exp.Expense(1.99, "Bread")
-    food.addExpense(bread)
-    budget.addCategory(food)
-    budget.display()
+# #for debugging purposes.
+# def main():
+#     budget = Budget("Budget 1")
+#     food = cat.Category("Food")
+#     bread = exp.Expense(1.99, "Bread")
+#     food.addExpense(bread)
+#     budget.addCategory(food)
+#     budget.display()
 
-    rent = cat.Category("Rent")
-    budget.addCategory(rent)
-    apartment = exp.Expense(2000.00, "Apartment")
-    rent.addExpense(apartment)
-    budget.refreshBudget()
-    budget.display()
+#     rent = cat.Category("Rent")
+#     budget.addCategory(rent)
+#     apartment = exp.Expense(2000.00, "Apartment")
+#     rent.addExpense(apartment)
+#     budget.refreshBudget()
+#     budget.display()
     
-#for debugging purposes.
-if __name__ == "__main__":
-    main()
+# #for debugging purposes.
+# if __name__ == "__main__":
+#     main()

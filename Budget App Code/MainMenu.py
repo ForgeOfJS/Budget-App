@@ -1,62 +1,53 @@
-import pickle
+import tkinter as tk
+from PIL import Image, ImageTk
 import os
-import wx  
+import Budget as B
 
-	
-class Mywin(wx.Frame): 
-            
-    def __init__(self, parent, title): 
-        super(Mywin, self).__init__(parent, title = title) 
-		
-        panel = wx.Panel(self) 
-        box = wx.BoxSizer(wx.HORIZONTAL)
-		
-        self.list = wx.ListCtrl(panel, -1, style = wx.LC_REPORT) 
-        self.list.InsertColumn(0, 'Budget Name', width = 100) 
-        self.list.InsertColumn(1, 'Total Budget Amount', wx.LIST_FORMAT_RIGHT, 100) 
-        self.list.InsertColumn(2, 'Available Cash', wx.LIST_FORMAT_RIGHT, 100) 
-        self.list.InsertColumn(3, '# of Categories', wx.LIST_FORMAT_RIGHT, 100) 
-        
-        budgetList = Mywin.populateBudgets()
+class EntryApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Budget Applicaiton")
+        self.root.geometry("800x700")
+        self.root.minsize(800, 700)
 
-        for i in budgetList: 
-            index = self.list.InsertItem(1000, i.budgetName) 
-            self.list.SetItem(index, 1, str(i.totalBudget)) 
-            self.list.SetItem(index, 2, str(i.availableIncome))
-            self.list.SetItem(index, 3, str(len(i.categoryList)))
-		
-        self.indexEntry = wx.TextCtrl(panel)
-        button = wx.Button(panel, wx.ID_ANY, 'Test', (10, 10))
-        button.Bind(wx.EVT_BUTTON, Mywin.deleteBudget(self.indexEntry))
-        
+        #bg_image = Image.open("OIP.jpg")  # Replace with your image file
+        bg_photo = tk.PhotoImage(file=os.getcwd()+"\Budget App Code\R.png")
+        bg_label = tk.Label(root, image=bg_photo)
+        bg_label.image = bg_photo
+        bg_label.place(relwidth=1, relheight=1)
 
-        box.Add(self.list,1,wx.ALL | wx.CENTER, 5) 
-        box.Add(self.indexEntry, 1, wx.ALL | wx.CENTER, 5)
-        box.Add(button, 1, wx.ALL | wx.CENTER, 5)
-        panel.SetSizer(box) 
-        panel.Fit() 
-        self.Centre() 
-         
-        self.Show(True)  
-    
-    def populateBudgets():
-        budgetList = []
+        # Listbox to display entries with two columns
+        self.entry_listbox = tk.Listbox(root, width=40, height=10)
+        self.entry_listbox.grid(row=0, column=0, rowspan=4, padx=10, pady=10, columnspan=2)
 
-        for file in os.listdir(os.curdir+'/BudgetCollection'):
-            if file.endswith('.pickle'):
-                with open('BudgetCollection/' + file, 'rb') as budget:
-                    budgetList.append(pickle.load(budget))
+        # Entry details labels and text boxes
+        label = tk.Label(root, text="Budget Name:").place(relx=0.5, rely=0.3, anchor="center")
 
-        return budgetList
+        self.entry_name_var = tk.StringVar()
+        self.entry_name_entry = tk.Entry(root, textvariable=self.entry_name_var)
+        self.entry_name_entry.grid(row=0, column=3, padx=10, pady=5)
+        self.entry_name_entry.place(relx=0.45, rely=0.35, anchor="center")
 
-    def deleteBudget(index):
-        for file in os.listdir(os.curdir+'/BudgetCollection'):
-            if file.endswith(str(index) + '.pickle'):
-                print("Done!")
-                os.remove(file)
-                break
-        
-     
-ex = wx.App() 
-Mywin(None,'ListCtrl Demo') 
-ex.MainLoop()
+        # Button to add entries
+        add_button = tk.Button(root, text="Add Entry", command=self.add_budget)
+        add_button.grid(row=2, column=3, pady=10)
+        add_button.place(relx=0.6, rely=0.35, anchor="center")
+
+        self.entry_listbox.place(relx=0.5, rely=0.5, anchor="center")
+    def add_budget(self):
+        # Get entry details from text boxes
+        entry_name = self.entry_name_var.get()
+
+        # Add entry to the listbox with two columns
+        entry_text = entry_name
+        new_budget = B.Budget(budgetName=entry_text)
+        new_budget.save()
+        self.entry_listbox.insert(tk.END, entry_text)
+
+        # Clear text boxes
+        self.entry_name_var.set("")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = EntryApp(root)
+    root.mainloop()
