@@ -2,6 +2,18 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import os
 import Budget as B
+import pickle
+
+def populateBudgets():
+        budgetList = []
+
+        for file in os.listdir(os.getcwd()+"\Budget App Code\BudgetCollection"):
+            if file.endswith('.pickle'):
+                with open(os.getcwd()+"\Budget App Code\BudgetCollection\\" + file, 'rb') as budget:
+                    budgetList.append(pickle.load(budget))
+
+        return budgetList
+
 
 class EntryApp:
     def __init__(self, root):
@@ -19,6 +31,11 @@ class EntryApp:
         # Listbox to display entries with two columns
         self.entry_listbox = tk.Listbox(root, width=40, height=10)
         self.entry_listbox.grid(row=0, column=0, rowspan=4, padx=10, pady=10, columnspan=2)
+        budgets = populateBudgets()
+        for budget in budgets:
+            self.entry_listbox.insert(tk.END, budget.budgetName)
+
+        
 
         # Entry details labels and text boxes
         label = tk.Label(root, text="Budget Name:").place(relx=0.5, rely=0.3, anchor="center")

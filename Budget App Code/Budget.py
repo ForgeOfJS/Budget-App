@@ -2,11 +2,10 @@ import Expense as exp
 import Category as cat
 import pickle
 import os
-
 count = 0
-
 #Main Class for the Application
 class Budget:
+
 
     netIncome = 0.00
     availableIncome = 0.00
@@ -60,16 +59,16 @@ class Budget:
         return self.availableIncome * investRatio
 
     def save(self):
-        with open(os.getcwd()+"\Budget App Code\BudgetCollection\savedBudget" + str(count) + ".pickle", "wb") as outfile:
+        with open(os.getcwd()+"\Budget App Code\BudgetCollection\\budget_" + self.budgetName + ".pickle", "wb") as outfile:
             pickle.dump(self, outfile)
         print("Budget " +str(count)+ ": '" + self.budgetName + "' saved with %" + str(self.percentageSavings) + " going to savings!")
 
     def populateBudgets():
         budgetList = []
 
-        for file in os.listdir(os.getcwd()+'/BudgetCollection'):
+        for file in os.listdir(os.getcwd()+"\Budget App Code\BudgetCollection"):
             if file.endswith('.pickle'):
-                with open('BudgetCollection/' + file, 'rb') as budget:
+                with open(os.getcwd()+"\Budget App Code\BudgetCollection\\" + file, 'rb') as budget:
                     budgetList.append(pickle.load(budget))
 
         return budgetList
